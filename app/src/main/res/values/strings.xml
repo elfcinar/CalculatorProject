@@ -18,4 +18,9 @@
     <string name="fill_in_the_blank">Lütfen boş alanları doldurunuz</string>
     <string name="user_information_wrong">Kullanıcı bilgileri hatalı</string>
     <string name="login_success">İşlem başarılı</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="rememberMe">Beni Hatırla</string>
+    <string name="login">Giriş Yap</string>
+    <string name="register">Kayıt Ol</string>
 </resources>

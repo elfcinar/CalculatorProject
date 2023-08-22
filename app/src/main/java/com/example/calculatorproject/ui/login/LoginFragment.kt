@@ -44,7 +44,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.editTextEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -130,6 +129,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.rememberMe.setOnCheckedChangeListener { buttonView, isChecked ->
             rememberMe = isChecked
         }
+
+        binding.btnSignUp.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+
     }
 
     private fun observeMessage() {
