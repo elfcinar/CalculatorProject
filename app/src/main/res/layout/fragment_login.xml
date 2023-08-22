@@ -47,7 +47,7 @@
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:padding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:padding="15dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +75,7 @@
             android:id="@+id/rememberMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Beni Hatırla"
+            android:text="@string/rememberMe"
             android:layout_gravity="left"
             />
 
@@ -87,7 +87,7 @@
             android:clickable="false"
             android:background="@drawable/button_background"
             android:backgroundTint="@color/loginpassive"
-            android:text="GİRİŞ YAP"
+            android:text="@string/login"
             android:textColor="#fff" />
 
         <View
@@ -104,9 +104,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_background"
-            android:text="ÜYE OL"
+            android:text="@string/register"
             android:textColor="#fff"
             app:layout_constraintTop_toBottomOf="@id/view" />
+
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progresBar"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
