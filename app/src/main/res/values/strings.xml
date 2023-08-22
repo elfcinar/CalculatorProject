@@ -11,6 +11,7 @@
     <string name="checkAnswer">Kontrol Et</string>
     <string name="result_true">Cevabınız doğru</string>
     <string name="result_false">Cevabınız yanlış</string>
+    <string name="game_over">Oyun bitti. Score:</string>
     <string name="user_exists">User Already Exists</string>
     <string name="user_empty">User Empty\n</string>
     <string name="not_equal">Password not equal</string>
