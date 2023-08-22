@@ -4,5 +4,5 @@ import com.example.calculatorproject.data.entity.User
 
 
 interface LoginRepository {
-    suspend fun login(email: String, password: String): User?
+    suspend fun login(email: String, password: String, rememberMe:Boolean): User?
 }
