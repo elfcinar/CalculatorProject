@@ -98,16 +98,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     when (it) {
                         is LoginState.Idle -> {}
                         is LoginState.Loading -> {
-                            binding.progresBar.isVisible = true
                         }
                         is LoginState.Result -> {
-                            binding.progresBar.isVisible = false
                             sharedPreferences.edit().putBoolean(REMEMBER_ME_KEY,it.rememberMe).apply()
                             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                             activity?.showToast(getString(R.string.user_login_success))
                         }
                         is LoginState.Error -> {
-                            binding.progresBar.isVisible = false
                             activity?.showToast(getString(R.string.upps_something_went_wrong))
                         }
                     }

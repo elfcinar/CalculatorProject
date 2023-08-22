@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="loginpassive">#1E000000</color>
-    <color name="loginactive">#FF3700B3</color>
+    <color name="loginactive">#7F27CD</color>
+    <color name="background">#ECD9D9</color>
 </resources>

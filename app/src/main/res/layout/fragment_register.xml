@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ECD9D9"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.register.RegisterFragment">
 
@@ -120,6 +120,7 @@
             android:text="Kayıt Ol"
             android:backgroundTint="@color/loginpassive"
             android:layout_width="match_parent"
+
             android:layout_marginTop="20dp"
             android:clickable="false"
             android:layout_height="wrap_content"/>

@@ -57,7 +57,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-           // checkMailAndPassword(binding.etName.text.toString(), binding.etSurname.text.toString(), binding.etEmail.text.toString(),binding.etPassword.text.toString(),binding.etConfirm.text.toString())
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -116,7 +115,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
                         }
                         is RegisterState.Success ->{
-                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                            findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
                         }
                         is RegisterState.Error ->{
                             requireActivity().showAlert(R.string.somethings_wrong)

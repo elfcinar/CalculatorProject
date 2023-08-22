@@ -13,7 +13,7 @@
     <string name="result_false">Cevabınız yanlış</string>
     <string name="not_equal">Lütfen aynı şifreleri giriniz</string>
     <string name="successful">Başarıyla Giriş Yapıldı</string>
-    <string name="register_message">Başarıyla Kayıl Olundu</string>
+    <string name="register_message">Başarıyla Kayıt Olundu</string>
     <string name="somethings_wrong">Birşeyler yanlış gitti</string>
     <string name="user_already_exists">Bu kullanıcı zaten var</string>
     <string name="user_not_found">Kullanıcı bulunamadı</string>
