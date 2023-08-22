@@ -9,8 +9,10 @@ import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.calculatorproject.Constants.REMEMBER_ME_KEY
 import com.example.calculatorproject.Constants.SHARED_PREF_NAME
 import com.example.calculatorproject.R
+import com.example.calculatorproject.data.state.LoginMessageState
 import com.example.calculatorproject.data.state.LoginState
 import com.example.calculatorproject.databinding.FragmentLoginBinding
 import com.example.calculatorproject.showToast
@@ -38,10 +41,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         listeners()
         observeLogin()
         rememberMeControl()
+        observeMessage()
 
         binding.editTextEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -74,14 +77,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             binding.btnLogin.isClickable = false
             val passiveColor = ContextCompat.getColor(requireContext(), R.color.loginpassive)
             binding.btnLogin.setBackgroundColor(passiveColor)
-          //  val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
-          //  binding.btnLogin.setBackground(backGround)
         } else {
             binding.btnLogin.isClickable = true
             val activeColor = ContextCompat.getColor(requireContext(), R.color.loginactive)
             binding.btnLogin.setBackgroundColor(activeColor)
-           // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
-           // binding.btnLogin.setBackground(backGround)
         }
         // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
         // binding.btnLogin.setBackground(backGround)
@@ -101,13 +100,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewModel.loginState.collect {
                     when (it) {
                         is LoginState.Idle -> {}
-                        is LoginState.Loading -> {}
+                        is LoginState.Loading -> {
+                          //  binding.progresBar.isVisible = true
+                        }
                         is LoginState.Result -> {
+                          //  binding.progresBar.isVisible = false
                             sharedPreferences.edit().putBoolean(REMEMBER_ME_KEY,it.rememberMe).apply()
                             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+                            activity?.showToast(getString(R.string.user_login_success))
                         }
                         is LoginState.Error -> {
-                           activity?.showToast(getString(R.string.upps_something_went_wrong))
+                            binding.progresBar.isVisible = false
+                            activity?.showToast(getString(R.string.upps_something_went_wrong))
                         }
                     }
                 }
@@ -126,6 +130,32 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.rememberMe.setOnCheckedChangeListener { buttonView, isChecked ->
             rememberMe = isChecked
+        }
+
+        binding.btnSignUp.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+
+    }
+
+    private fun observeMessage() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.message.collect{
+                    when(it){
+                        LoginMessageState.Idle ->{}
+                        LoginMessageState.Empty ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.fill_in_the_blank).create().show()
+                        }
+                        LoginMessageState.UserNotFound ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_not_found).create().show()
+                        }
+                        LoginMessageState.InformationWrong ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_information_wrong).create().show()
+                        }
+                    }
+                }
+            }
         }
     }
 
