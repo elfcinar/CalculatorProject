@@ -1,5 +1,6 @@
 package com.example.calculatorproject
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.View
 import android.widget.Toast
@@ -15,6 +16,9 @@ fun Context.showToast(message:Int){
 }
 
 fun Context.showAlert(message:String){
+    AlertDialog.Builder(this).setMessage(message).create().show()
+
+fun Context.showAlert(message:Int){
     AlertDialog.Builder(this).setMessage(message).create().show()
 }
 
