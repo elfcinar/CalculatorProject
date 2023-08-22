@@ -12,6 +12,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -76,14 +77,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             binding.btnLogin.isClickable = false
             val passiveColor = ContextCompat.getColor(requireContext(), R.color.loginpassive)
             binding.btnLogin.setBackgroundColor(passiveColor)
-          //  val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
-          //  binding.btnLogin.setBackground(backGround)
         } else {
             binding.btnLogin.isClickable = true
             val activeColor = ContextCompat.getColor(requireContext(), R.color.loginactive)
             binding.btnLogin.setBackgroundColor(activeColor)
-           // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
-           // binding.btnLogin.setBackground(backGround)
         }
         // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
         // binding.btnLogin.setBackground(backGround)
@@ -103,13 +100,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewModel.loginState.collect {
                     when (it) {
                         is LoginState.Idle -> {}
-                        is LoginState.Loading -> {}
+                        is LoginState.Loading -> {
+                          //  binding.progresBar.isVisible = true
+                        }
                         is LoginState.Result -> {
+                          //  binding.progresBar.isVisible = false
                             sharedPreferences.edit().putBoolean(REMEMBER_ME_KEY,it.rememberMe).apply()
                             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+                            activity?.showToast(getString(R.string.user_login_success))
                         }
                         is LoginState.Error -> {
-                           activity?.showToast(getString(R.string.upps_something_went_wrong))
+                            binding.progresBar.isVisible = false
+                            activity?.showToast(getString(R.string.upps_something_went_wrong))
                         }
                     }
                 }
