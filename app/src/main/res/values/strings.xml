@@ -11,7 +11,10 @@
     <string name="checkAnswer">Kontrol Et</string>
     <string name="result_true">Cevabınız doğru</string>
     <string name="result_false">Cevabınız yanlış</string>
-
+    <string name="user_exists">User Already Exists</string>
+    <string name="user_empty">User Empty\n</string>
+    <string name="not_equal">Password not equal</string>
+    <string name="successful">Successfully Logined</string>
     <string name="somethings_wrong">Birşeyler yanlış gitti</string>
     <string name="user_already_exists">Bu kullanıcı zaten var</string>
     <string name="user_not_found">Kullanıcı bulunamadı</string>
