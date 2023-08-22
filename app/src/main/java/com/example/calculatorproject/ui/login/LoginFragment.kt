@@ -42,7 +42,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         observeLogin()
         rememberMeControl()
         observeMessage()
-
+        binding.btnLogin.isClickable = false
         binding.editTextEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }

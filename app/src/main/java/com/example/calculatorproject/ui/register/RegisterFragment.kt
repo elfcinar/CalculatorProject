@@ -88,19 +88,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     when(it){
                         RegisterMessageState.Idle ->{}
                         RegisterMessageState.UserAlreadyExists->{
-                            AlertDialog.Builder(requireContext()).setTitle("UserAlreadyExists").setMessage("sdfsdf")
-                            requireActivity().showAlert(R.string.user_exists)
+                            requireActivity().showAlert(R.string.user_already_exists)
                         }
                         RegisterMessageState.Success ->{
-                            AlertDialog.Builder(requireContext()).setTitle("Success").setMessage("dsdfsd")
-                            requireActivity().showToast(R.string.successful)
+                            requireActivity().showToast(R.string.register_message)
                         }
                         RegisterMessageState.Empty ->{
-                            AlertDialog.Builder(requireContext()).setTitle("Empty").setMessage("dsdfsd")
-                            requireActivity().showAlert(R.string.user_empty)
+                            requireActivity().showAlert(R.string.fill_in_the_blank)
                         }
                         RegisterMessageState.PasswordsNotEquals ->{
-                            AlertDialog.Builder(requireContext()).setTitle("PasswordsNotEquals").setMessage("dsdfsd")
                             requireActivity().showAlert(R.string.not_equal)
                         }
                     }
@@ -121,10 +117,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         }
                         is RegisterState.Success ->{
                             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                            activity?.showToast("oldu")
                         }
                         is RegisterState.Error ->{
-                            AlertDialog.Builder(requireContext()).setTitle("somethings_wrong").setMessage(it.throwable.message)
+                            requireActivity().showAlert(R.string.somethings_wrong)
                         }
                     }
                 }
