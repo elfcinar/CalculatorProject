@@ -58,7 +58,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.editTextPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -82,8 +81,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val activeColor = ContextCompat.getColor(requireContext(), R.color.loginactive)
             binding.btnLogin.setBackgroundColor(activeColor)
         }
-        // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
-        // binding.btnLogin.setBackground(backGround)
     }
 
     private fun rememberMeControl() {
@@ -101,10 +98,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     when (it) {
                         is LoginState.Idle -> {}
                         is LoginState.Loading -> {
-                          //  binding.progresBar.isVisible = true
+                            binding.progresBar.isVisible = true
                         }
                         is LoginState.Result -> {
-                          //  binding.progresBar.isVisible = false
+                            binding.progresBar.isVisible = false
                             sharedPreferences.edit().putBoolean(REMEMBER_ME_KEY,it.rememberMe).apply()
                             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                             activity?.showToast(getString(R.string.user_login_success))
@@ -112,6 +109,27 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         is LoginState.Error -> {
                             binding.progresBar.isVisible = false
                             activity?.showToast(getString(R.string.upps_something_went_wrong))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeMessage() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.message.collect{
+                    when(it){
+                        LoginMessageState.Idle ->{}
+                        LoginMessageState.Empty ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.fill_in_the_blank).create().show()
+                        }
+                        LoginMessageState.UserNotFound ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_not_found).create().show()
+                        }
+                        LoginMessageState.InformationWrong ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_information_wrong).create().show()
                         }
                     }
                 }
@@ -134,28 +152,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.btnSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
-
-    }
-
-    private fun observeMessage() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED){
-                viewModel.message.collect{
-                    when(it){
-                        LoginMessageState.Idle ->{}
-                        LoginMessageState.Empty ->{
-                            AlertDialog.Builder(requireContext()).setMessage(R.string.fill_in_the_blank).create().show()
-                        }
-                        LoginMessageState.UserNotFound ->{
-                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_not_found).create().show()
-                        }
-                        LoginMessageState.InformationWrong ->{
-                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_information_wrong).create().show()
-                        }
-                    }
-                }
-            }
         }
     }
 
