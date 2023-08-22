@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calculatorproject.AppDatabase
 import com.example.calculatorproject.data.repository.LoginRepository
+import com.example.calculatorproject.data.state.LoginMessageState
 import com.example.calculatorproject.data.state.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,6 +20,9 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     private val _loginState: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Idle)
     val loginState: StateFlow<LoginState> = _loginState
 
+    private val _message: MutableSharedFlow<LoginMessageState> = MutableSharedFlow()
+    val message: SharedFlow<LoginMessageState> = _message
+
     fun login(email: String, password: String, rememberMe:Boolean) {
         viewModelScope.launch {
             if(!email.isNullOrEmpty() && !password.isNullOrEmpty()) {
@@ -27,13 +31,13 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                     loginRepository.login(email, password, rememberMe)?.let {
                         _loginState.value = LoginState.Result(it,rememberMe)
                     } ?: kotlin.run {
-                        //error
+                        _message.emit(LoginMessageState.UserNotFound)
                     }
                 }.onFailure {
                     _loginState.value = LoginState.Error(it)
                 }
             }else{
-                       //error
+                _message.emit(LoginMessageState.Empty)
             }
         }
     }
