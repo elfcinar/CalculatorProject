@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CalculatorProject</string>
+    <string name="app_name">Calculator App</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_login_success">Kullanici Girişi Basarili</string>
     <string name="upps_something_went_wrong">Upps! Bir seyler ters gitti!</string>
@@ -11,11 +11,10 @@
     <string name="checkAnswer">Kontrol Et</string>
     <string name="result_true">Cevabınız doğru</string>
     <string name="result_false">Cevabınız yanlış</string>
+    <string name="not_equal">Lütfen aynı şifreleri giriniz</string>
+    <string name="successful">Başarıyla Giriş Yapıldı</string>
+    <string name="register_message">Başarıyla Kayıt Olundu</string>
     <string name="game_over">Oyun bitti. Score:</string>
-    <string name="user_exists">User Already Exists</string>
-    <string name="user_empty">User Empty\n</string>
-    <string name="not_equal">Password not equal</string>
-    <string name="successful">Successfully Logined</string>
     <string name="somethings_wrong">Birşeyler yanlış gitti</string>
     <string name="user_already_exists">Bu kullanıcı zaten var</string>
     <string name="user_not_found">Kullanıcı bulunamadı</string>
@@ -23,7 +22,7 @@
     <string name="user_information_wrong">Kullanıcı bilgileri hatalı</string>
     <string name="login_success">İşlem başarılı</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="password">Şifre</string>
     <string name="rememberMe">Beni Hatırla</string>
     <string name="login">Giriş Yap</string>
     <string name="register">Kayıt Ol</string>
