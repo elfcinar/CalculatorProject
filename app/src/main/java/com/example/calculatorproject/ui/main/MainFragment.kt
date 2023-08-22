@@ -1,60 +1,94 @@
 package com.example.calculatorproject.ui.main
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.calculatorproject.R
+import com.example.calculatorproject.data.state.RandomTransactionState
+import com.example.calculatorproject.databinding.FragmentMainBinding
+import com.example.calculatorproject.showToast
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class MainFragment : Fragment(R.layout.fragment_main) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var binding: FragmentMainBinding
+    private val viewModel: MainViewModel by activityViewModels()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentMainBinding.bind(view)
+
+        viewModel.fetchRandomTransaction()
+        observeRandomTransactionState()
+        observeUserAnswerState()
+        listeners()
+    }
+
+    private fun observeUserAnswerState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.userAnswer.collect{
+                    if(it){
+                        binding.tvScore.text = viewModel.score.toString()
+                        requireContext().showToast(R.string.result_true)
+                        viewModel.fetchRandomTransaction()
+                        binding.etAnswer.text.clear()
+                    }
+                    else {
+                        binding.tvScore.text = viewModel.score.toString()
+                        requireContext().showToast(R.string.result_false)
+                    }
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun observeRandomTransactionState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.randomTransactionState.collect{
+                    when(it){
+                        RandomTransactionState.Idle ->{}
+                        is RandomTransactionState.Success ->{
+                            binding.tvFirstNumber.text = it.firstNumber.toString()
+                            binding.tvSecondNumber.text = it.secondNumber.toString()
+                            binding.tvOperator.text = it.operator
+                        }
+                        is RandomTransactionState.Error ->{
+                            requireContext().showToast(it.throwable.message.toString())
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    private fun listeners() {
+        binding.btnNewGame.setOnClickListener {
+            viewModel.fetchRandomTransaction()
+        }
+        binding.btnCheckAnswer.setOnClickListener {
+            viewModel.checkUserAnswer(binding.etAnswer.text.toString())
+        }
+        binding.etAnswer.addTextChangedListener( object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.btnCheckAnswer.isEnabled = count > 0
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
     }
 }
