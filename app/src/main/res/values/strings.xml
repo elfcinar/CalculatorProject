@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">CalculatorProject</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="user_saving_success">Kullanici Kaydi Basarili</string>
+    <string name="upps_something_went_wrong">Upps! Bir seyler ters gitti!</string>
+    <string name="update_user_success">Kullanici guncelleme islemi basarili</string>
+
 </resources>

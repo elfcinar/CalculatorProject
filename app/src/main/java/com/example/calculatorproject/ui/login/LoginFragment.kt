@@ -1,60 +1,128 @@
 package com.example.calculatorproject.ui.login
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.example.calculatorproject.Constants.REMEMBER_ME_KEY
+import com.example.calculatorproject.Constants.SHARED_PREF_NAME
 import com.example.calculatorproject.R
+import com.example.calculatorproject.data.state.LoginState
+import com.example.calculatorproject.databinding.FragmentLoginBinding
+import com.example.calculatorproject.showToast
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val viewModel:LoginViewModel by activityViewModels()
+    lateinit var binding: FragmentLoginBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    var rememberMe: Boolean = false
+    lateinit var sharedPreferences: SharedPreferences
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentLoginBinding.bind(view)
+
+        listeners()
+        observeLogin()
+        rememberMeControl()
+
+        binding.editTextEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                checkMailAndPassword(binding.editTextEmail.text.toString(), binding.editTextPassword.text.toString())
+            }
+
+        })
+
+        binding.editTextPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                checkMailAndPassword(binding.editTextPassword.text.toString(), binding.editTextPassword.text.toString())
+            }
+
+        })
+    }
+
+    @SuppressLint("ResourceAsColor")
+    fun checkMailAndPassword(email:String, password:String) {
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            binding.btnLogin.isClickable = false
+            val passiveColor = ContextCompat.getColor(requireContext(), R.color.loginpassive)
+            binding.btnLogin.setBackgroundColor(passiveColor)
+        } else {
+            binding.btnLogin.isClickable = true
+            val activeColor = ContextCompat.getColor(requireContext(), R.color.loginactive)
+            binding.btnLogin.setBackgroundColor(activeColor)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+    private fun rememberMeControl() {
+        sharedPreferences = requireActivity().getSharedPreferences(SHARED_PREF_NAME, AppCompatActivity.MODE_PRIVATE)
+        rememberMe = sharedPreferences.getBoolean(REMEMBER_ME_KEY, false)
+        if (rememberMe) {
+           findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun observeLogin() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.loginState.collect {
+                    when (it) {
+                        is LoginState.Idle -> {}
+                        is LoginState.Loading -> {}
+                        is LoginState.Result -> {
+                            sharedPreferences.edit().putBoolean(REMEMBER_ME_KEY,it.rememberMe).apply()
+                            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+                        }
+                        is LoginState.Error -> {
+                           activity?.showToast(getString(R.string.upps_something_went_wrong))
+                        }
+                    }
                 }
             }
+        }
     }
+
+    private fun listeners() {
+        binding.btnLogin.setOnClickListener {
+            viewModel.login(
+                binding.editTextEmail.text.toString().trim(),
+                binding.editTextPassword.text.toString().trim(),
+                rememberMe
+
+            )
+
+        }
+
+        binding.rememberMe.setOnCheckedChangeListener { buttonView, isChecked ->
+            rememberMe = isChecked
+        }
+    }
+
 }
