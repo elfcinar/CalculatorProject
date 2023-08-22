@@ -5,56 +5,87 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.example.calculatorproject.Constants
+import com.example.calculatorproject.Constants.LOGGED_USER_ID
+import com.example.calculatorproject.Constants.SHARED_PREF_NAME
 import com.example.calculatorproject.R
+import com.example.calculatorproject.data.state.RegisterMessageState
+import com.example.calculatorproject.data.state.RegisterState
+import com.example.calculatorproject.databinding.FragmentRegisterBinding
+import com.example.calculatorproject.showToast
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class RegisterFragment : Fragment(R.layout.fragment_register) {
+    private val viewModel: RegisterViewModel by activityViewModels()
+    lateinit var binding: FragmentRegisterBinding
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentRegisterBinding.bind(view)
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class RegisterFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        observeUserAddState()
+        observeMessage()
+        listeners()
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private fun listeners() {
+        binding.btnRegister.setOnClickListener {
+            viewModel.insert(binding.etName.text.toString().trim(), binding.etSurname.text.toString().trim(), binding.etEmail.text.toString().trim(),binding.etPassword.text.toString().trim(),binding.etPasswordConfirm.text.toString().trim())
+
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegisterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegisterFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun observeMessage() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.message.collect{
+                    when(it){
+                        RegisterMessageState.Idle ->{}
+                        RegisterMessageState.UserAlreadyExists->{
+                            AlertDialog.Builder(requireContext()).setMessage("user_already_exists").create().show()
+                        }
+                        RegisterMessageState.Success ->{
+                            AlertDialog.Builder(requireContext()).setMessage("login_success").create().show()
+                        }
+                        RegisterMessageState.Empty ->{
+                            AlertDialog.Builder(requireContext()).setMessage("fill_in_the_blank").create().show()
+                        }
+                        RegisterMessageState.PasswordsNotEquals ->{
+                            AlertDialog.Builder(requireContext()).setMessage("passwords_not_equals").create().show()
+                        }
+                    }
                 }
             }
+        }
     }
+
+
+    private fun observeUserAddState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.userAddState.collect{
+                    when(it){
+                        RegisterState.Idle ->{}
+                        RegisterState.Loading ->{
+
+                        }
+                        is RegisterState.Success ->{
+                            //findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
+                            activity?.showToast("oldu")
+                        }
+                        is RegisterState.Error ->{
+                            AlertDialog.Builder(requireContext()).setTitle("somethings_wrong").setMessage(it.throwable.message)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
