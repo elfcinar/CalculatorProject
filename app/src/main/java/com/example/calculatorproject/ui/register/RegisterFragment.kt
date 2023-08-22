@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -90,13 +89,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                             requireActivity().showAlert(R.string.user_already_exists)
                         }
                         RegisterMessageState.Success ->{
-                            requireActivity().showToast(R.string.register_message)
+                            requireActivity().showToast(R.string.register_successful)
                         }
                         RegisterMessageState.Empty ->{
                             requireActivity().showAlert(R.string.fill_in_the_blank)
                         }
                         RegisterMessageState.PasswordsNotEquals ->{
-                            requireActivity().showAlert(R.string.not_equal)
+                            requireActivity().showAlert(R.string.password_not_equal)
                         }
                     }
                 }
