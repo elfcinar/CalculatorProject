@@ -11,4 +11,11 @@
     <string name="checkAnswer">Kontrol Et</string>
     <string name="result_true">Cevabınız doğru</string>
     <string name="result_false">Cevabınız yanlış</string>
+
+    <string name="somethings_wrong">Birşeyler yanlış gitti</string>
+    <string name="user_already_exists">Bu kullanıcı zaten var</string>
+    <string name="user_not_found">Kullanıcı bulunamadı</string>
+    <string name="fill_in_the_blank">Lütfen boş alanları doldurunuz</string>
+    <string name="user_information_wrong">Kullanıcı bilgileri hatalı</string>
+    <string name="login_success">İşlem başarılı</string>
 </resources>

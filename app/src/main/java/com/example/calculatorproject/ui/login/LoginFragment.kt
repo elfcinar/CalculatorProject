@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -19,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.calculatorproject.Constants.REMEMBER_ME_KEY
 import com.example.calculatorproject.Constants.SHARED_PREF_NAME
 import com.example.calculatorproject.R
+import com.example.calculatorproject.data.state.LoginMessageState
 import com.example.calculatorproject.data.state.LoginState
 import com.example.calculatorproject.databinding.FragmentLoginBinding
 import com.example.calculatorproject.showToast
@@ -38,6 +40,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         listeners()
         observeLogin()
         rememberMeControl()
+        observeMessage()
 
         binding.editTextEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -126,6 +129,27 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.rememberMe.setOnCheckedChangeListener { buttonView, isChecked ->
             rememberMe = isChecked
+        }
+    }
+
+    private fun observeMessage() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.message.collect{
+                    when(it){
+                        LoginMessageState.Idle ->{}
+                        LoginMessageState.Empty ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.fill_in_the_blank).create().show()
+                        }
+                        LoginMessageState.UserNotFound ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_not_found).create().show()
+                        }
+                        LoginMessageState.InformationWrong ->{
+                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_information_wrong).create().show()
+                        }
+                    }
+                }
+            }
         }
     }
 
