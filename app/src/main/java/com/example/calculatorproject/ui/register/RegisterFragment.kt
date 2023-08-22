@@ -59,7 +59,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            checkMailAndPassword(binding.etName.text.toString(), binding.etSurname.text.toString(), binding.etEmail.text.toString(),binding.etPassword.text.toString(),binding.etPasswordConfirm.text.toString())
+            checkMailAndPassword(binding.etName.text.toString(), binding.etSurname.text.toString(), binding.etEmail.text.toString(),binding.etPassword.text.toString(),binding.etConfirm.text.toString())
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -68,7 +68,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     }
 
     private fun listeners() {
-        binding.etPasswordConfirm.addTextChangedListener(textWatcher)
+        binding.etConfirm.addTextChangedListener(textWatcher)
         binding.etPassword.addTextChangedListener(textWatcher)
         binding.etEmail.addTextChangedListener(textWatcher)
         binding.etName.addTextChangedListener(textWatcher)

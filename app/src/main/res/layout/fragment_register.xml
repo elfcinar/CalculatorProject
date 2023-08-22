@@ -28,7 +28,6 @@
             android:layout_marginTop="16dp"
             android:padding="1dp"
             android:textColorHint="@color/black"
-            android:background="@drawable/textview_background"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +48,7 @@
             android:layout_marginTop="16dp"
             android:padding="1dp"
             android:textColorHint="@color/black"
-            android:background="@drawable/textview_background"
+
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +58,7 @@
                 android:id="@+id/etSurname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="Surname"
                 android:padding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,7 +69,6 @@
             android:layout_marginTop="16dp"
             android:padding="1dp"
             android:textColorHint="@color/black"
-            android:background="@drawable/textview_background"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,14 +89,13 @@
             android:layout_marginTop="16dp"
             android:padding="1dp"
             android:textColorHint="@color/black"
-            android:background="@drawable/textview_background"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
@@ -111,7 +108,6 @@
             android:layout_marginTop="16dp"
             android:padding="1dp"
             android:textColorHint="@color/black"
-            android:background="@drawable/textview_background"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,6 +127,7 @@
             android:backgroundTint="@color/loginpassive"
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
+            android:clickable="false"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 </FrameLayout>
