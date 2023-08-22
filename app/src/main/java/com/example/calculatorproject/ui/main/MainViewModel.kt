@@ -3,6 +3,7 @@ package com.example.calculatorproject.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calculatorproject.data.state.RandomTransactionState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -10,9 +11,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel:ViewModel() {
-
+    private var score = 0
     private var resultProcess = 0.0f
-    var score = 0
+
+    private val _scoreState:MutableSharedFlow<Int> = MutableSharedFlow()
+    val scoreState:SharedFlow<Int> = _scoreState
 
     private val _userAnswer:MutableSharedFlow<Boolean> = MutableSharedFlow()
     val userAnswer:SharedFlow<Boolean> = _userAnswer
@@ -24,10 +27,16 @@ class MainViewModel:ViewModel() {
         viewModelScope.launch {
             runCatching {
                 val firstNumber = generateRandomNumber()
-                val secondNumber = generateRandomNumber()
+                var secondNumber = generateRandomNumber()
                 val operator = generateRandomOperator()
+                if(operator == "/" && secondNumber == 0){
+                    while (secondNumber == 0){
+                        secondNumber = generateRandomNumber()
+                    }
+                }
                 calculateTransaction(firstNumber.toFloat(),secondNumber.toFloat(),operator)
-                _randomTransactionState.value = RandomTransactionState.Success(firstNumber,secondNumber,operator)
+                if(secondNumber > firstNumber) _randomTransactionState.value = RandomTransactionState.Success(secondNumber,firstNumber,operator)
+                else _randomTransactionState.value = RandomTransactionState.Success(firstNumber,secondNumber,operator)
             }.onFailure {
                 _randomTransactionState.value = RandomTransactionState.Error(it)
             }
@@ -48,7 +57,8 @@ class MainViewModel:ViewModel() {
                 resultProcess = firstNumber + secondNumber
             }
             "-" -> {
-                resultProcess = firstNumber - secondNumber
+                if(secondNumber > firstNumber) resultProcess = secondNumber - firstNumber
+                else resultProcess = firstNumber - secondNumber
             }
             "*" -> {
                 resultProcess = firstNumber * secondNumber
@@ -64,10 +74,19 @@ class MainViewModel:ViewModel() {
             if(answer.toFloat() == resultProcess){
                 score += 5
                 _userAnswer.emit(true)
+                _scoreState.emit(score)
             } else {
                 if(score > 0) score--
                 _userAnswer.emit(false)
+                _scoreState.emit(score)
             }
+        }
+    }
+
+    fun gameOver() {
+        viewModelScope.launch {
+            score = 0
+            _scoreState.emit(score)
         }
     }
 }
