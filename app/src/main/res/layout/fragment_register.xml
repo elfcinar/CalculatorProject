@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="1dp"
+            app:endIconMode="password_toggle"
             android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,6 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:padding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -101,6 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="1dp"
+            app:endIconMode="password_toggle"
             android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,6 +113,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirm"
                 android:layout_width="match_parent"
+                android:inputType="textPassword"
                 android:layout_height="wrap_content"
                 android:hint="Password Again"
                 android:padding="16dp" />

@@ -15,7 +15,6 @@ import com.example.calculatorproject.data.state.RandomTransactionState
 import com.example.calculatorproject.databinding.FragmentMainBinding
 import com.example.calculatorproject.showAlert
 import com.example.calculatorproject.showToast
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -46,6 +45,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             override fun onFinish() {
                 binding.btnCheckAnswer.isEnabled = false
                 binding.etAnswer.isEnabled = false
+                binding.etAnswer.text.clear()
                 requireContext().showAlert("${getString(R.string.game_over)} $score")
                 viewModel.gameOver()
             }
