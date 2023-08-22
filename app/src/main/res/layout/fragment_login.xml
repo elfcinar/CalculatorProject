@@ -26,7 +26,7 @@
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/calculate_icon"
+            android:src="@drawable/logo3"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -38,7 +38,6 @@
             android:layout_marginTop="16dp"
             android:padding="1dp"
             android:textColorHint="@color/black"
-            android:background="@drawable/textview_background"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="1dp"
-            android:background="@drawable/textview_background"
             android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,11 +79,12 @@
             android:layout_gravity="left"
             />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:clickable="false"
             android:background="@drawable/button_background"
             android:backgroundTint="@color/loginpassive"
             android:text="GİRİŞ YAP"

@@ -45,10 +45,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkMailAndPassword(binding.editTextEmail.text.toString(), binding.editTextPassword.text.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
-                checkMailAndPassword(binding.editTextEmail.text.toString(), binding.editTextPassword.text.toString())
             }
 
         })
@@ -59,10 +59,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkMailAndPassword(binding.editTextPassword.text.toString(), binding.editTextPassword.text.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
-                checkMailAndPassword(binding.editTextPassword.text.toString(), binding.editTextPassword.text.toString())
             }
 
         })
@@ -74,11 +74,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             binding.btnLogin.isClickable = false
             val passiveColor = ContextCompat.getColor(requireContext(), R.color.loginpassive)
             binding.btnLogin.setBackgroundColor(passiveColor)
+          //  val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
+          //  binding.btnLogin.setBackground(backGround)
         } else {
             binding.btnLogin.isClickable = true
             val activeColor = ContextCompat.getColor(requireContext(), R.color.loginactive)
             binding.btnLogin.setBackgroundColor(activeColor)
+           // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
+           // binding.btnLogin.setBackground(backGround)
         }
+        // val backGround = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
+        // binding.btnLogin.setBackground(backGround)
     }
 
     private fun rememberMeControl() {
@@ -115,9 +121,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 binding.editTextEmail.text.toString().trim(),
                 binding.editTextPassword.text.toString().trim(),
                 rememberMe
-
             )
-
         }
 
         binding.rememberMe.setOnCheckedChangeListener { buttonView, isChecked ->
