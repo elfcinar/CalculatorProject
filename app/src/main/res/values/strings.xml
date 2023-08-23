@@ -4,7 +4,7 @@
     <string name="user_login_success">Kullanici Girişi Basarili</string>
     <string name="upps_something_went_wrong">Upps! Bir seyler ters gitti!</string>
     <string name="result">Sonuç</string>
-    <string name="newGame">Yeni Oyun</string>
+    <string name="newGame">Yeni Soru</string>
     <string name="checkAnswer">Kontrol Et</string>
     <string name="result_true">Cevabınız doğru</string>
     <string name="result_false">Cevabınız yanlış</string>
