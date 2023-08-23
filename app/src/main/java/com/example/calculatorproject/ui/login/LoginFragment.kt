@@ -24,6 +24,7 @@ import com.example.calculatorproject.R
 import com.example.calculatorproject.data.state.LoginMessageState
 import com.example.calculatorproject.data.state.LoginState
 import com.example.calculatorproject.databinding.FragmentLoginBinding
+import com.example.calculatorproject.showAlert
 import com.example.calculatorproject.showToast
 import kotlinx.coroutines.launch
 
@@ -120,13 +121,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     when(it){
                         LoginMessageState.Idle ->{}
                         LoginMessageState.Empty ->{
-                            AlertDialog.Builder(requireContext()).setMessage(R.string.fill_in_the_blank).create().show()
+                            requireActivity().showAlert(R.string.fill_in_the_blank)
                         }
                         LoginMessageState.UserNotFound ->{
-                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_not_found).create().show()
+                            requireActivity().showAlert(R.string.user_not_found)
                         }
                         LoginMessageState.InformationWrong ->{
-                            AlertDialog.Builder(requireContext()).setMessage(R.string.user_information_wrong).create().show()
+                            requireActivity().showAlert(R.string.user_information_wrong)
                         }
                     }
                 }
