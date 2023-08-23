@@ -45,7 +45,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             override fun onFinish() {
                 binding.btnCheckAnswer.isEnabled = false
                 binding.etAnswer.isEnabled = false
-                binding.etAnswer.text.clear()
+                binding.etAnswer.text?.clear()
                 requireContext().showAlert("${getString(R.string.game_over)} $score")
                 viewModel.gameOver()
             }
@@ -71,7 +71,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     if(it){
                         requireContext().showToast(R.string.result_true)
                         viewModel.fetchRandomTransaction()
-                        binding.etAnswer.text.clear()
+                        binding.etAnswer.text?.clear()
                     }
                     else {
                         requireContext().showToast(R.string.result_false)
