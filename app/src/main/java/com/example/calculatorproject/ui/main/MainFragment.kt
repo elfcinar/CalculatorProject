@@ -106,9 +106,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             if(binding.tvTimer.text.equals("0")) timer()
             binding.etAnswer.isEnabled = true
             viewModel.fetchRandomTransaction()
+            binding.etAnswer.text?.clear()
         }
         binding.btnCheckAnswer.setOnClickListener {
             viewModel.checkUserAnswer(binding.etAnswer.text.toString())
+            binding.etAnswer.text?.clear()
         }
         binding.etAnswer.addTextChangedListener( object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
